@@ -3,131 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Shop - SHOP THAIPP</title>
+    <title>Quản Trị Cao Cấp - THAIPP</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .admin-container { padding: 15px; max-width: 1000px; margin: auto; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-        .stat-card { background: #fff; padding: 15px; border-radius: 10px; text-align: center; border-left: 5px solid #e11d48; }
-        .stat-card h4 { margin: 0; font-size: 12px; color: #666; }
-        .stat-card p { margin: 5px 0 0; font-size: 18px; font-weight: bold; color: #e11d48; }
-        
-        .admin-section { background: #fff; padding: 15px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .admin-section h3 { margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #f8fafc; }
-        
-        .status { padding: 3px 7px; border-radius: 4px; font-size: 11px; font-weight: bold; }
-        .status-pending { background: #fef9c3; color: #854d0e; } /* Chờ duyệt */
-        .status-success { background: #dcfce7; color: #166534; } /* Thành công */
-        
-        .btn-action { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; }
-        .btn-edit { background: #38bdf8; color: white; }
-        .btn-delete { background: #ef4444; color: white; margin-left: 5px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 10px; }
+        .admin-wrapper { max-width: 800px; margin: auto; }
+        .section-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h2 { color: #e11d48; border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 18px; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .btn-submit { width: 100%; background: #22c55e; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        .btn-card { background: #2563eb; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+        th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
+        th { background: #f8f9fa; }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">★ QUẢN TRỊ SHOP THAIPP ★</div>
-    <div class="user"><a href="index.html">Thoát Admin</a></div>
-</header>
+<div class="admin-wrapper">
+    <div class="section-card">
+        <h2>💰 CỘNG TIỀN THÀNH VIÊN</h2>
+        <input type="text" id="adminUser" placeholder="Tên tài khoản khách">
+        <input type="number" id="adminMoney" placeholder="Số tiền cộng">
+        <button class="btn-submit" onclick="updateBalance()">Xác nhận cộng tiền</button>
+    </div>
 
-<div class="admin-container">
-    <div class="stats-grid">
-        <div class="stat-card">
-            <h4>TỔNG DOANH THU</h4>
-            <p>0đ</p>
+    <div class="section-card">
+        <h2>🚀 UP ACC MỚI LÊN SHOP</h2>
+        <input type="text" id="accTitle" placeholder="Tên hiển thị (Vd: Acc Nakroth Thứ Nguyên)">
+        <input type="text" id="accImg" placeholder="Link ảnh Acc (Vd: anh1.jpg)">
+        <input type="number" id="accTướng" placeholder="Số lượng tướng">
+        <input type="number" id="accSkin" placeholder="Số lượng skin">
+        <input type="number" id="accPrice" placeholder="Giá tiền (Vd: 50000)">
+        
+        <label>Chọn danh mục:</label>
+        <select id="accCategory">
+            <option value="50">Acc Liên Quân dưới 50k</option>
+            <option value="150">Acc Liên Quân dưới 150k</option>
+            <option value="500">Acc Liên Quân dưới 500k</option>
+            <option value="1000">Acc Liên Quân dưới 1000k</option>
+        </select>
+        <button class="btn-submit btn-card" onclick="uploadAcc()">Đăng bán ngay</button>
+    </div>
+
+    <div class="section-card">
+        <h2>💳 DUYỆT THẺ NẠP TỰ ĐỘNG</h2>
+        <div id="cardList">
+            <p style="color: #666; font-size: 14px;">Đang quét các thẻ chờ duyệt...</p>
         </div>
-        <div class="stat-card" style="border-left-color: #22c55e;">
-            <h4>ACC ĐÃ BÁN</h4>
-            <p>0</p>
-        </div>
-    </div>
-
-    <div class="admin-section">
-        <h3>Duyệt thẻ nạp gần đây</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Người dùng</th>
-                    <th>Mệnh giá</th>
-                    <th>Trạng thái</th>
-                    <th>Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>thaipp01</td>
-                    <td>100.000đ</td>
-                    <td><span class="status status-pending">Chờ duyệt</span></td>
-                    <td><button class="btn-action btn-edit" onclick="alert('Đã duyệt thẻ!')">Duyệt</button></td>
-                </tr>
-                <tr>
-                    <td>anhquan99</td>
-                    <td>50.000đ</td>
-                    <td><span class="status status-success">Thành công</span></td>
-                    <td>-</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="admin-section">
-        <h3>Quản lý danh mục Acc</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Tên mục</th>
-                    <th>Giá</th>
-                    <th>Số lượng</th>
-                    <th>Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Acc dưới 1M</td>
-                    <td>1.000.000đ</td>
-                    <td>15</td>
-                    <td><button class="btn-action btn-edit">Sửa</button><button class="btn-action btn-delete">Xóa</button></td>
-                </tr>
-                <tr>
-                    <td>Acc dưới 50k</td>
-                    <td>50.000đ</td>
-                    <td>50</td>
-                    <td><button class="btn-action btn-edit">Sửa</button><button class="btn-action btn-delete">Xóa</button></td>
-                </tr>
-            </tbody>
-        </table>
-        <button class="btn-auth" style="margin-top: 15px; background: #22c55e;">+ Thêm Acc Mới</button>
-    </div>
-</div>
-
-</body>
-</html>
-<div class="admin-section">
-    <h3>Quản lý số dư thành viên</h3>
-    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-        <input type="text" id="adminUser" placeholder="Tên tài khoản" style="flex:1; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-        <input type="number" id="adminMoney" placeholder="Số tiền cộng" style="flex:1; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
-        <button onclick="updateBalance()" style="background: #22c55e; color: white; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold;">CỘNG TIỀN</button>
     </div>
 </div>
 
 <script>
+    // Hàm cộng tiền
     function updateBalance() {
-        const user = document.getElementById('adminUser').value;
+        const user = document.getElementById('adminUser').value.trim();
         const money = document.getElementById('adminMoney').value;
-
-        if(!user || !money) {
-            alert("Vui lòng nhập đủ tên và số tiền!");
-            return;
-        }
-
-        // Lưu vào bộ nhớ trình duyệt
+        if(!user || !money) { alert("Nhập đủ thông tin!"); return; }
         localStorage.setItem("balance_" + user, money);
-        alert("Đã cộng " + money + "đ vào tài khoản " + user);
+        alert("Thành công!");
     }
+
+    // Hàm Up Acc
+    function uploadAcc() {
+        const acc = {
+            id: Date.now(),
+            title: document.getElementById('accTitle').value,
+            img: document.getElementById('accImg').value,
+            tuong: document.getElementById('accTướng').value,
+            skin: document.getElementById('accSkin').value,
+            price: document.getElementById('accPrice').value,
+            cat: document.getElementById('accCategory').value
+        };
+
+        // Lấy danh sách acc cũ và thêm acc mới vào
+        let listAcc = JSON.parse(localStorage.getItem("shop_accs") || "[]");
+        listAcc.push(acc);
+        localStorage.setItem("shop_accs", JSON.stringify(listAcc));
+        alert("Đã đăng Acc lên danh mục " + acc.cat + "k thành công!");
+    }
+
+    // Duyệt thẻ tự động (Cứ 5s tự cộng tiền nếu có thẻ nạp)
+    setInterval(() => {
+        let pendingCard = JSON.parse(localStorage.getItem("pending_card") || "null");
+        if(pendingCard) {
+            let currentBal = parseInt(localStorage.getItem("balance_" + pendingCard.user) || "0");
+            localStorage.setItem("balance_" + pendingCard.user, currentBal + parseInt(pendingCard.amount));
+            localStorage.removeItem("pending_card");
+            document.getElementById('cardList').innerHTML = `<p style="color: green;">✔ Đã duyệt thẻ ${pendingCard.amount}đ cho ${pendingCard.user}</p>`;
+        }
+    }, 5000);
 </script>
+</body>
+</html>
