@@ -3,96 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Trị Cao Cấp - THAIPP</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Quản Trị Viên - Shop THAIPP</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 10px; }
-        .admin-wrapper { max-width: 800px; margin: auto; }
-        .section-card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        h2 { color: #e11d48; border-bottom: 2px solid #eee; padding-bottom: 10px; font-size: 18px; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        .btn-submit { width: 100%; background: #22c55e; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .btn-card { background: #2563eb; margin-top: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-        th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
-        th { background: #f8f9fa; }
+        body { font-family: sans-serif; background: #f4f7f6; padding: 20px; margin: 0; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #e11d48; text-align: center; border-bottom: 2px solid #e11d48; padding-bottom: 10px; }
+        h2 { font-size: 18px; margin-top: 20px; color: #333; }
+        input, select, button { width: 100%; padding: 12px; margin-top: 8px; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
+        button { background: #22c55e; color: white; border: none; font-weight: bold; cursor: pointer; }
+        button:hover { opacity: 0.9; }
+        .btn-delete { background: #ef4444; padding: 5px 10px; width: auto; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #eee; padding: 10px; text-align: left; font-size: 14px; }
+        th { background: #f8fafc; }
+        .back-home { display: block; text-align: center; margin-top: 20px; color: #2563eb; text-decoration: none; }
     </style>
 </head>
 <body>
 
-<div class="admin-wrapper">
-    <div class="section-card">
-        <h2>💰 CỘNG TIỀN THÀNH VIÊN</h2>
-        <input type="text" id="adminUser" placeholder="Tên tài khoản khách">
-        <input type="number" id="adminMoney" placeholder="Số tiền cộng">
-        <button class="btn-submit" onclick="updateBalance()">Xác nhận cộng tiền</button>
+<div class="container">
+    <h1>HỆ THỐNG ADMIN</h1>
+    
+    <a href="index.html" class="back-home">← Quay lại trang chủ</a>
+
+    <div style="background: #eff6ff; padding: 15px; border-radius: 10px; margin-top: 20px;">
+        <h2>💰 Cộng tiền thành viên</h2>
+        <input type="text" id="moneyUser" placeholder="Tên tài khoản khách">
+        <input type="number" id="moneyAmount" placeholder="Số tiền cần cộng">
+        <button style="background: #3b82f6;" onclick="addMoney()">XÁC NHẬN CỘNG TIỀN</button>
     </div>
 
-    <div class="section-card">
-        <h2>🚀 UP ACC MỚI LÊN SHOP</h2>
-        <input type="text" id="accTitle" placeholder="Tên hiển thị (Vd: Acc Nakroth Thứ Nguyên)">
-        <input type="text" id="accImg" placeholder="Link ảnh Acc (Vd: anh1.jpg)">
-        <input type="number" id="accTướng" placeholder="Số lượng tướng">
-        <input type="number" id="accSkin" placeholder="Số lượng skin">
-        <input type="number" id="accPrice" placeholder="Giá tiền (Vd: 50000)">
+    <div style="margin-top: 30px;">
+        <h2>🚀 Đăng tài khoản mới</h2>
+        <input type="text" id="accTitle" placeholder="Tiêu đề (Vd: Acc Nakroth siêu phẩm)">
+        <input type="text" id="accImg" placeholder="Link ảnh hoặc tên file ảnh (Vd: anh1.jpg)">
+        <input type="number" id="accTuong" placeholder="Số tướng">
+        <input type="number" id="accSkin" placeholder="Số trang phục">
+        <input type="number" id="accPrice" placeholder="Giá bán (VND)">
         
-        <label>Chọn danh mục:</label>
-        <select id="accCategory">
-            <option value="50">Acc Liên Quân dưới 50k</option>
-            <option value="150">Acc Liên Quân dưới 150k</option>
-            <option value="500">Acc Liên Quân dưới 500k</option>
-            <option value="1000">Acc Liên Quân dưới 1000k</option>
+        <label style="display:block; margin-top:10px; font-weight:bold;">Chọn danh mục:</label>
+        <select id="accCat">
+            <option value="2000">Dưới 2M</option>
+            <option value="500">Dưới 500k</option>
+            <option value="250">Dưới 250k</option>
+            <option value="150">Dưới 150k</option>
+            <option value="50">Dưới 50k</option>
         </select>
-        <button class="btn-submit btn-card" onclick="uploadAcc()">Đăng bán ngay</button>
+        <button onclick="uploadAcc()" style="margin-top: 15px;">ĐĂNG BÁN NGAY</button>
     </div>
 
-    <div class="section-card">
-        <h2>💳 DUYỆT THẺ NẠP TỰ ĐỘNG</h2>
-        <div id="cardList">
-            <p style="color: #666; font-size: 14px;">Đang quét các thẻ chờ duyệt...</p>
-        </div>
-    </div>
+    <h2>📋 Acc đang rao bán</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Tiêu đề</th>
+                <th>Giá</th>
+                <th>Mục</th>
+                <th>Xóa</th>
+            </tr>
+        </thead>
+        <tbody id="adminAccTable"></tbody>
+    </table>
 </div>
 
 <script>
-    // Hàm cộng tiền
-    function updateBalance() {
-        const user = document.getElementById('adminUser').value.trim();
-        const money = document.getElementById('adminMoney').value;
-        if(!user || !money) { alert("Nhập đủ thông tin!"); return; }
-        localStorage.setItem("balance_" + user, money);
-        alert("Thành công!");
+    // 1. Hàm cộng tiền
+    function addMoney() {
+        const user = document.getElementById('moneyUser').value.trim();
+        const amount = document.getElementById('moneyAmount').value;
+        if(!user || !amount) return alert("Vui lòng nhập đủ!");
+        
+        let currentBal = parseInt(localStorage.getItem("balance_" + user) || "0");
+        localStorage.setItem("balance_" + user, currentBal + parseInt(amount));
+        alert("Đã cộng " + amount + "đ cho tài khoản: " + user);
     }
 
-    // Hàm Up Acc
+    // 2. Hàm đăng Acc
     function uploadAcc() {
         const acc = {
             id: Date.now(),
             title: document.getElementById('accTitle').value,
             img: document.getElementById('accImg').value,
-            tuong: document.getElementById('accTướng').value,
+            tuong: document.getElementById('accTuong').value,
             skin: document.getElementById('accSkin').value,
             price: document.getElementById('accPrice').value,
-            cat: document.getElementById('accCategory').value
+            cat: document.getElementById('accCat').value
         };
 
-        // Lấy danh sách acc cũ và thêm acc mới vào
+        if(!acc.title || !acc.price) return alert("Vui lòng nhập tiêu đề và giá!");
+
         let listAcc = JSON.parse(localStorage.getItem("shop_accs") || "[]");
         listAcc.push(acc);
         localStorage.setItem("shop_accs", JSON.stringify(listAcc));
-        alert("Đã đăng Acc lên danh mục " + acc.cat + "k thành công!");
+        alert("Đã đăng thành công!");
+        renderAdminAccs();
     }
 
-    // Duyệt thẻ tự động (Cứ 5s tự cộng tiền nếu có thẻ nạp)
-    setInterval(() => {
-        let pendingCard = JSON.parse(localStorage.getItem("pending_card") || "null");
-        if(pendingCard) {
-            let currentBal = parseInt(localStorage.getItem("balance_" + pendingCard.user) || "0");
-            localStorage.setItem("balance_" + pendingCard.user, currentBal + parseInt(pendingCard.amount));
-            localStorage.removeItem("pending_card");
-            document.getElementById('cardList').innerHTML = `<p style="color: green;">✔ Đã duyệt thẻ ${pendingCard.amount}đ cho ${pendingCard.user}</p>`;
+    // 3. Hiển thị danh sách và xóa
+    function renderAdminAccs() {
+        const listAcc = JSON.parse(localStorage.getItem("shop_accs") || "[]");
+        const table = document.getElementById('adminAccTable');
+        table.innerHTML = "";
+        
+        listAcc.forEach((acc, index) => {
+            table.innerHTML += `
+                <tr>
+                    <td>${acc.title}</td>
+                    <td>${parseInt(acc.price).toLocaleString()}đ</td>
+                    <td>${acc.cat}k</td>
+                    <td><button class="btn-delete" onclick="deleteAcc(${index})">Xóa</button></td>
+                </tr>
+            `;
+        });
+    }
+
+    function deleteAcc(index) {
+        if(confirm("Bạn muốn xóa acc này?")) {
+            let listAcc = JSON.parse(localStorage.getItem("shop_accs") || "[]");
+            listAcc.splice(index, 1);
+            localStorage.setItem("shop_accs", JSON.stringify(listAcc));
+            renderAdminAccs();
         }
-    }, 5000);
+    }
+
+    window.onload = renderAdminAccs;
 </script>
 </body>
 </html>
