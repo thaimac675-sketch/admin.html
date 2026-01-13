@@ -83,14 +83,17 @@
     }
 
     const acc = {
-        id: Date.now(),
-        title: document.getElementById('t').value,
-        img: imageName, // Tên ảnh đã chuẩn hóa
-        tuong: document.getElementById('tg').value,
-        skin: document.getElementById('sk').value,
-        price: document.getElementById('pr').value,
-        cat: document.getElementById('cat').value
-    };
+    id: Date.now(), // Mã định danh duy nhất
+    title: document.getElementById('t').value,
+    img: document.getElementById('img').value,
+    tuong: document.getElementById('tg').value,
+    skin: document.getElementById('sk').value,
+    price: document.getElementById('pr').value,
+    cat: document.getElementById('cat').value,
+    // THÊM 2 DÒNG NÀY
+    tk: document.getElementById('tk_acc').value, // Ô nhập tài khoản
+    mk: document.getElementById('mk_acc').value  // Ô nhập mật khẩu
+};
     
     // ... phần code lưu localStorage giữ nguyên ...
     alert("Đã đăng! Ảnh sử dụng: " + imageName);
