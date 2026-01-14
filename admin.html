@@ -135,3 +135,51 @@
 
 </body>
 </html>
+<div class="box" style="margin-top:20px;">
+    <h2>📥 DUYỆT THẺ NẠP</h2>
+    <div id="admin-card-list" style="max-height: 400px; overflow-y: auto;"></div>
+</div>
+
+<script>
+    function showCardsAdmin() {
+        const cards = JSON.parse(localStorage.getItem("all_cards") || "[]");
+        const container = document.getElementById("admin-card-list");
+        container.innerHTML = "";
+        
+        // Chỉ hiện những thẻ đang Chờ xử lý (status == 0)
+        const pending = cards.filter(c => c.status == 0);
+        
+        if(pending.length === 0) container.innerHTML = "Không có thẻ nào chờ duyệt.";
+
+        pending.forEach(c => {
+            container.innerHTML += `
+                <div style="background:#f8fafc; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
+                    <b>User: ${c.user}</b> - ${c.telco} (${parseInt(c.amount).toLocaleString()}đ)<br>
+                    <small>S: ${c.serial} | P: ${c.pin}</small><br>
+                    <button onclick="approve(${c.id}, 1)" style="background:green; color:white; width:45%; margin-top:5px; cursor:pointer;">DUYỆT</button>
+                    <button onclick="approve(${c.id}, 2)" style="background:red; color:white; width:45%; margin-top:5px; cursor:pointer;">SAI THẺ</button>
+                </div>`;
+        });
+    }
+
+    function approve(id, newStatus) {
+        let cards = JSON.parse(localStorage.getItem("all_cards") || "[]");
+        let card = cards.find(c => c.id == id);
+
+        if(card) {
+            card.status = newStatus;
+            if(newStatus == 1) {
+                // Nếu thành công -> Cộng tiền cho user
+                let bal = parseInt(localStorage.getItem("balance_" + card.user) || "0");
+                localStorage.setItem("balance_" + card.user, bal + parseInt(card.amount));
+                alert("Đã duyệt và cộng tiền cho " + card.user);
+            } else {
+                alert("Đã bác bỏ thẻ của " + card.user);
+            }
+            localStorage.setItem("all_cards", JSON.stringify(cards));
+            location.reload();
+        }
+    }
+    // Gọi hàm này trong window.onload của Admin
+    showCardsAdmin();
+</script>
