@@ -2,119 +2,136 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Quản Trị Bảo Mật</title>
+    <title>Admin Panel - SHOP THAIPP</title>
     <style>
-        body { font-family: sans-serif; background: #0f172a; color: #f8fafc; padding: 20px; margin: 0; }
-        .admin-container { max-width: 600px; margin: 20px auto; background: #1e293b; padding: 30px; border-radius: 16px; border: 1px solid #334155; }
-        h1 { color: #fb7185; text-align: center; font-size: 24px; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; }
-        .input-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 8px; font-size: 14px; color: #94a3b8; }
-        input, select { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: white; box-sizing: border-box; }
-        input:focus { border-color: #fb7185; outline: none; }
-        button { width: 100%; padding: 14px; background: #e11d48; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; }
-        button:hover { background: #be123c; transform: translateY(-2px); }
-        .nav-links { text-align: center; margin-top: 25px; border-top: 1px solid #334155; padding-top: 20px; }
-        .nav-links a { color: #94a3b8; text-decoration: none; font-size: 14px; }
-        .nav-links a:hover { color: #fb7185; }
-        table { width: 100%; margin-top: 20px; border-collapse: collapse; font-size: 12px; background: #0f172a; }
-        th, td { border: 1px solid #334155; padding: 10px; text-align: left; }
-        th { color: #fb7185; }
-        .btn-del { background: #450a0a; color: #f87171; border: 1px solid #7f1d1d; padding: 4px 8px; cursor: pointer; border-radius: 4px; }
+        body { font-family: sans-serif; background: #f1f5f9; padding: 20px; }
+        .admin-container { max-width: 800px; margin: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { color: #e11d48; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-top: 0; }
+        input, select { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; margin-top: 10px; }
+        .btn-add { background: #2563eb; }
+        .btn-money { background: #16a34a; }
+        .list-item { font-size: 13px; padding: 8px; border-bottom: 1px solid #eee; }
     </style>
 </head>
 <body>
 
 <div class="admin-container">
-    <h1>Khu Vực Quản Trị</h1>
-
-    <div class="input-group">
-        <label>Tên tài khoản khách cần cộng tiền:</label>
-        <input type="text" id="mUser" placeholder="Nhập username...">
-        <input type="number" id="mAmount" placeholder="Số tiền..." style="margin-top:10px;">
-        <button onclick="addM()" style="margin-top:10px; background:#2563eb;">CỘNG TIỀN</button>
-    </div>
-
-    <hr style="border: 0.5px solid #334155; margin: 30px 0;">
-
-    <div class="input-group">
-        <label>Đăng Acc mới (Tiêu đề, Ảnh, Tướng, Skin, Giá):</label>
-        <input type="text" id="t" placeholder="Tiêu đề Acc...">
-        <input type="text" id="img" placeholder="Tên file ảnh (Vd: anh1.jpg)" style="margin-top:10px;">
-        <div style="display:flex; gap:10px; margin-top:10px;">
-            <input type="number" id="tg" placeholder="Tướng">
-            <input type="number" id="sk" placeholder="Skin">
-        </div>
-        <input type="number" id="pr" placeholder="Giá tiền..." style="margin-top:10px;">
-        <select id="cat" style="margin-top:10px;">
-            <option value="2000">Mục 2M</option>
-            <option value="500">Mục 500k</option>
-            <option value="250">Mục 250k</option>
-            <option value="150">Mục 150k</option>
-            <option value="50">Mục 50k</option>
+    <div class="box">
+        <h2>📦 ĐĂNG ACC</h2>
+        <input type="text" id="t" placeholder="Tiêu đề (Vd: Acc Trắng Thông Tin)">
+        <input type="text" id="img" placeholder="Tên ảnh (Vd: nakroth.jpg)">
+        <input type="number" id="tg" placeholder="Số tướng">
+        <input type="number" id="sk" placeholder="Số trang phục">
+        <input type="number" id="pr" placeholder="Giá bán (Vd: 500000)">
+        <select id="cat">
+            <option value="50">Dưới 50k</option>
+            <option value="150">Dưới 150k</option>
+            <option value="500">Dưới 500k</option>
+            <option value="2000">Dưới 2M</option>
         </select>
-        <button onclick="save()" style="margin-top:15px;">ĐĂNG ACC LÊN SHOP</button>
+        <div style="background: #fff1f2; padding: 10px; border-radius: 5px; margin-top: 10px;">
+            <p style="margin:0 0 5px 0; font-size:12px; font-weight:bold; color:#e11d48;">Thông tin đăng nhập (Khách mua mới thấy):</p>
+            <input type="text" id="tk_acc" placeholder="Tài khoản game">
+            <input type="text" id="mk_acc" placeholder="Mật khẩu game">
+        </div>
+        <button class="btn-add" onclick="saveAcc()">ĐĂNG LÊN SHOP</button>
     </div>
 
-    <h3>Danh sách đã đăng</h3>
-    <table id="listAcc"></table>
+    <div class="box">
+        <h2>💰 CỘNG TIỀN USER</h2>
+        <p style="font-size: 12px; color: #64748b;">Nhập chính xác tên tài khoản khách đã đăng ký.</p>
+        <input type="text" id="user_target" placeholder="Tên tài khoản khách">
+        <input type="number" id="amount" placeholder="Số tiền cần cộng (Vd: 100000)">
+        <button class="btn-money" onclick="addMoney()">CỘNG TIỀN NGAY</button>
 
-    <div class="nav-links">
-        <a href="../index.html">← Quay lại trang chủ Shop</a>
+        <h2 style="margin-top: 30px;">Danh sách Acc đang bán</h2>
+        <div id="list-acc" style="max-height: 200px; overflow-y: auto; background: #f8fafc; border-radius: 5px;"></div>
     </div>
 </div>
 
 <script>
-    function addM() {
-        const u = document.getElementById('mUser').value;
-        const a = document.getElementById('mAmount').value;
-        if(!u || !a) return alert("Nhập đủ!");
-        let b = parseInt(localStorage.getItem("balance_" + u) || "0");
-        localStorage.setItem("balance_" + u, b + parseInt(a));
-        alert("Thành công!");
+    // 1. HÀM ĐĂNG ACC
+    function saveAcc() {
+        const acc = {
+            id: Date.now(),
+            title: document.getElementById('t').value,
+            img: document.getElementById('img').value,
+            tuong: document.getElementById('tg').value,
+            skin: document.getElementById('sk').value,
+            price: document.getElementById('pr').value,
+            cat: document.getElementById('cat').value,
+            tk: document.getElementById('tk_acc').value,
+            mk: document.getElementById('mk_acc').value
+        };
+
+        if(!acc.title || !acc.tk || !acc.mk || !acc.price) {
+            alert("Vui lòng nhập đầy đủ thông tin Acc và TK/MK!");
+            return;
+        }
+
+        let list = JSON.parse(localStorage.getItem("shop_accs") || "[]");
+        list.push(acc);
+        localStorage.setItem("shop_accs", JSON.stringify(list));
+        alert("Đã đăng Acc thành công!");
+        location.reload();
     }
 
-    function save() {
-    let imageName = document.getElementById('img').value.trim();
-    
-    // Tự động thêm .jpg nếu bạn chỉ nhập tên (giúp giảm lỗi nhập sai)
-    if (imageName !== "" && !imageName.includes(".")) {
-        imageName += ".jpg";
+    // 2. HÀM CỘNG TIỀN (QUAN TRỌNG)
+    function addMoney() {
+        const username = document.getElementById('user_target').value.trim();
+        const moneyToAdd = parseInt(document.getElementById('amount').value);
+
+        if(!username || isNaN(moneyToAdd)) {
+            alert("Vui lòng nhập tên user và số tiền hợp lệ!");
+            return;
+        }
+
+        // Lấy số dư hiện tại của user đó
+        let currentBalance = parseInt(localStorage.getItem("balance_" + username) || "0");
+        
+        // Cộng thêm tiền
+        let newBalance = currentBalance + moneyToAdd;
+        
+        // Lưu lại vào hệ thống
+        localStorage.setItem("balance_" + username, newBalance);
+
+        alert(`Đã cộng thành công ${moneyToAdd.toLocaleString()}đ cho tài khoản [${username}]. \nSố dư mới: ${newBalance.toLocaleString()}đ`);
+        
+        // Reset ô nhập
+        document.getElementById('user_target').value = "";
+        document.getElementById('amount').value = "";
     }
 
-    const acc = {
-    id: Date.now(), // Mã định danh duy nhất
-    title: document.getElementById('t').value,
-    img: document.getElementById('img').value,
-    tuong: document.getElementById('tg').value,
-    skin: document.getElementById('sk').value,
-    price: document.getElementById('pr').value,
-    cat: document.getElementById('cat').value,
-    // THÊM 2 DÒNG NÀY
-    tk: document.getElementById('tk_acc').value, // Ô nhập tài khoản
-    mk: document.getElementById('mk_acc').value  // Ô nhập mật khẩu
-};
-    
-    // ... phần code lưu localStorage giữ nguyên ...
-    alert("Đã đăng! Ảnh sử dụng: " + imageName);
-    }
-
-    function render() {
-        let data = JSON.parse(localStorage.getItem("shop_accs") || "[]");
-        let h = `<tr><th>Tên</th><th>Giá</th><th>Xóa</th></tr>`;
-        data.forEach((item, i) => {
-            h += `<tr><td>${item.title}</td><td>${item.price}</td><td><button class="btn-del" onclick="del(${i})">Xóa</button></td></tr>`;
+    // 3. HIỂN THỊ DANH SÁCH ĐỂ QUẢN LÝ
+    function showAccs() {
+        const list = JSON.parse(localStorage.getItem("shop_accs") || "[]");
+        const container = document.getElementById('list-acc');
+        if(list.length === 0) {
+            container.innerHTML = "<p style='padding:10px;'>Chưa có acc nào.</p>";
+            return;
+        }
+        list.reverse().forEach((acc, index) => {
+            container.innerHTML += `
+                <div class="list-item">
+                    <b>${acc.title}</b> - ${parseInt(acc.price).toLocaleString()}đ 
+                    <button onclick="deleteAcc(${acc.id})" style="width:auto; padding:2px 8px; background:red; float:right; margin:0;">Xóa</button>
+                </div>`;
         });
-        document.getElementById('listAcc').innerHTML = h;
     }
 
-    function del(i) {
-        let data = JSON.parse(localStorage.getItem("shop_accs") || "[]");
-        data.splice(i, 1);
-        localStorage.setItem("shop_accs", JSON.stringify(data));
-        render();
+    function deleteAcc(id) {
+        if(confirm("Bạn muốn xóa Acc này?")) {
+            let list = JSON.parse(localStorage.getItem("shop_accs") || "[]");
+            list = list.filter(a => a.id !== id);
+            localStorage.setItem("shop_accs", JSON.stringify(list));
+            location.reload();
+        }
     }
-    window.onload = render;
+
+    window.onload = showAccs;
 </script>
+
 </body>
 </html>
