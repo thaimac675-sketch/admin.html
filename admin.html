@@ -2,57 +2,110 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel - SHOP THAIPP</title>
+    <title>Admin Panel - THAIPP</title>
     <style>
         body { font-family: sans-serif; background: #f1f5f9; padding: 20px; }
-        .admin-container { max-width: 800px; margin: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        h2 { color: #e11d48; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-top: 0; }
+        .admin-container { max-width: 1000px; margin: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { color: #e11d48; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-top: 0; font-size: 18px; }
         input, select { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; margin-top: 10px; }
-        .btn-add { background: #2563eb; }
-        .btn-money { background: #16a34a; }
-        .list-item { font-size: 13px; padding: 8px; border-bottom: 1px solid #eee; }
+        button { padding: 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; }
+        .btn-blue { background: #2563eb; width: 100%; }
+        .btn-green { background: #16a34a; width: 100%; }
+        .btn-red { background: #e11d48; padding: 5px 10px; font-size: 11px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+        th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
+        th { background: #f8fafc; }
+        .scroll { max-height: 300px; overflow-y: auto; }
     </style>
 </head>
 <body>
 
 <div class="admin-container">
     <div class="box">
-        <h2>📦 ĐĂNG ACC</h2>
-        <input type="text" id="t" placeholder="Tiêu đề (Vd: Acc Trắng Thông Tin)">
-        <input type="text" id="img" placeholder="Tên ảnh (Vd: nakroth.jpg)">
+        <h2>📦 ĐĂNG ACC MỚI</h2>
+        <input type="text" id="t" placeholder="Tiêu đề">
+        <input type="text" id="img" placeholder="Tên ảnh (vd: 1.jpg)">
         <input type="number" id="tg" placeholder="Số tướng">
         <input type="number" id="sk" placeholder="Số trang phục">
-        <input type="number" id="pr" placeholder="Giá bán (Vd: 500000)">
+        <input type="number" id="pr" placeholder="Giá bán">
         <select id="cat">
             <option value="50">Dưới 50k</option>
             <option value="150">Dưới 150k</option>
             <option value="500">Dưới 500k</option>
             <option value="2000">Dưới 2M</option>
         </select>
-        <div style="background: #fff1f2; padding: 10px; border-radius: 5px; margin-top: 10px;">
-            <p style="margin:0 0 5px 0; font-size:12px; font-weight:bold; color:#e11d48;">Thông tin đăng nhập (Khách mua mới thấy):</p>
-            <input type="text" id="tk_acc" placeholder="Tài khoản game">
-            <input type="text" id="mk_acc" placeholder="Mật khẩu game">
-        </div>
-        <button class="btn-add" onclick="saveAcc()">ĐĂNG LÊN SHOP</button>
+        <input type="text" id="tk_acc" placeholder="Tài khoản Game">
+        <input type="text" id="mk_acc" placeholder="Mật khẩu Game">
+        <button class="btn-blue" onclick="saveAcc()">ĐĂNG LÊN SHOP</button>
     </div>
 
     <div class="box">
-        <h2>💰 CỘNG TIỀN USER</h2>
-        <p style="font-size: 12px; color: #64748b;">Nhập chính xác tên tài khoản khách đã đăng ký.</p>
+        <h2>💰 CỘNG TIỀN NHANH</h2>
         <input type="text" id="user_target" placeholder="Tên tài khoản khách">
-        <input type="number" id="amount" placeholder="Số tiền cần cộng (Vd: 100000)">
-        <button class="btn-money" onclick="addMoney()">CỘNG TIỀN NGAY</button>
+        <input type="number" id="amount" placeholder="Số tiền cộng">
+        <button class="btn-green" onclick="addMoney()">CỘNG TIỀN</button>
+        
+        <h2 style="margin-top:20px;">📥 DUYỆT THẺ NẠP</h2>
+        <div id="admin-card-list" class="scroll"></div>
+    </div>
 
-        <h2 style="margin-top: 30px;">Danh sách Acc đang bán</h2>
-        <div id="list-acc" style="max-height: 200px; overflow-y: auto; background: #f8fafc; border-radius: 5px;"></div>
+    <div class="box" style="grid-column: span 2;">
+        <h2>👥 QUẢN LÝ THÀNH VIÊN (USER)</h2>
+        <div class="scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tài khoản</th>
+                        <th>Mật khẩu</th>
+                        <th>Số dư</th>
+                        <th>Ngày tạo</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody id="user-list-admin"></tbody>
+            </table>
+        </div>
     </div>
 </div>
 
 <script>
-    // 1. HÀM ĐĂNG ACC
+    // --- QUẢN LÝ USER ---
+    function showUsersAdmin() {
+        const users = JSON.parse(localStorage.getItem("all_users") || "[]");
+        const container = document.getElementById("user-list-admin");
+        container.innerHTML = "";
+        
+        users.reverse().forEach((u, index) => {
+            const bal = localStorage.getItem("balance_" + u.username) || "0";
+            container.innerHTML += `
+                <tr>
+                    <td><b>${u.username}</b></td>
+                    <td>${u.password}</td>
+                    <td style="color:green; font-weight:bold;">${parseInt(bal).toLocaleString()}đ</td>
+                    <td style="color:#666;">${u.date || 'N/A'}</td>
+                    <td><button class="btn-red" onclick="deleteUser('${u.username}')">Xóa</button></td>
+                </tr>`;
+        });
+    }
+
+    function deleteUser(username) {
+        if(confirm("Bạn có chắc muốn xóa tài khoản [" + username + "]? Mọi dữ liệu tiền và lịch sử sẽ bị mất!")) {
+            // Xóa khỏi danh sách user
+            let users = JSON.parse(localStorage.getItem("all_users") || "[]");
+            users = users.filter(u => u.username !== username);
+            localStorage.setItem("all_users", JSON.stringify(users));
+            
+            // Xóa số dư và các dữ liệu liên quan
+            localStorage.removeItem("balance_" + username);
+            localStorage.removeItem("history_" + username);
+            
+            alert("Đã xóa tài khoản thành công!");
+            showUsersAdmin(); // Cập nhật lại bảng
+        }
+    }
+
+    // --- QUẢN LÝ ACC ---
     function saveAcc() {
         const acc = {
             id: Date.now(),
@@ -65,154 +118,60 @@
             tk: document.getElementById('tk_acc').value,
             mk: document.getElementById('mk_acc').value
         };
-
-        if(!acc.title || !acc.tk || !acc.mk || !acc.price) {
-            alert("Vui lòng nhập đầy đủ thông tin Acc và TK/MK!");
-            return;
-        }
-
+        if(!acc.title || !acc.tk) return alert("Nhập đủ thông tin!");
         let list = JSON.parse(localStorage.getItem("shop_accs") || "[]");
         list.push(acc);
         localStorage.setItem("shop_accs", JSON.stringify(list));
-        alert("Đã đăng Acc thành công!");
+        alert("Đã đăng Acc!");
         location.reload();
     }
 
-    // 2. HÀM CỘNG TIỀN (QUAN TRỌNG)
+    // --- QUẢN LÝ THẺ & TIỀN ---
     function addMoney() {
-        const username = document.getElementById('user_target').value.trim();
-        const moneyToAdd = parseInt(document.getElementById('amount').value);
-
-        if(!username || isNaN(moneyToAdd)) {
-            alert("Vui lòng nhập tên user và số tiền hợp lệ!");
-            return;
-        }
-
-        // Lấy số dư hiện tại của user đó
-        let currentBalance = parseInt(localStorage.getItem("balance_" + username) || "0");
-        
-        // Cộng thêm tiền
-        let newBalance = currentBalance + moneyToAdd;
-        
-        // Lưu lại vào hệ thống
-        localStorage.setItem("balance_" + username, newBalance);
-
-        alert(`Đã cộng thành công ${moneyToAdd.toLocaleString()}đ cho tài khoản [${username}]. \nSố dư mới: ${newBalance.toLocaleString()}đ`);
-        
-        // Reset ô nhập
-        document.getElementById('user_target').value = "";
-        document.getElementById('amount').value = "";
+        const user = document.getElementById('user_target').value.trim();
+        const money = parseInt(document.getElementById('amount').value);
+        if(!user || isNaN(money)) return alert("Nhập đủ thông tin!");
+        let bal = parseInt(localStorage.getItem("balance_" + user) || "0");
+        localStorage.setItem("balance_" + user, bal + money);
+        alert("Đã cộng tiền!");
+        showUsersAdmin();
     }
 
-    // 3. HIỂN THỊ DANH SÁCH ĐỂ QUẢN LÝ
-    function showAccs() {
-        const list = JSON.parse(localStorage.getItem("shop_accs") || "[]");
-        const container = document.getElementById('list-acc');
-        if(list.length === 0) {
-            container.innerHTML = "<p style='padding:10px;'>Chưa có acc nào.</p>";
-            return;
-        }
-        list.reverse().forEach((acc, index) => {
-            container.innerHTML += `
-                <div class="list-item">
-                    <b>${acc.title}</b> - ${parseInt(acc.price).toLocaleString()}đ 
-                    <button onclick="deleteAcc(${acc.id})" style="width:auto; padding:2px 8px; background:red; float:right; margin:0;">Xóa</button>
-                </div>`;
-        });
-    }
-
-    function deleteAcc(id) {
-        if(confirm("Bạn muốn xóa Acc này?")) {
-            let list = JSON.parse(localStorage.getItem("shop_accs") || "[]");
-            list = list.filter(a => a.id !== id);
-            localStorage.setItem("shop_accs", JSON.stringify(list));
-            location.reload();
-        }
-    }
-
-    window.onload = showAccs;
-</script>
-
-</body>
-</html>
-<div class="box" style="margin-top:20px;">
-    <h2>📥 DUYỆT THẺ NẠP</h2>
-    <div id="admin-card-list" style="max-height: 400px; overflow-y: auto;"></div>
-</div>
-
-<script>
     function showCardsAdmin() {
         const cards = JSON.parse(localStorage.getItem("all_cards") || "[]");
         const container = document.getElementById("admin-card-list");
-        container.innerHTML = "";
-        
-        // Chỉ hiện những thẻ đang Chờ xử lý (status == 0)
         const pending = cards.filter(c => c.status == 0);
-        
-        if(pending.length === 0) container.innerHTML = "Không có thẻ nào chờ duyệt.";
-
+        if(pending.length === 0) { container.innerHTML = "Không có thẻ chờ."; return; }
         pending.forEach(c => {
             container.innerHTML += `
-                <div style="background:#f8fafc; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
-                    <b>User: ${c.user}</b> - ${c.telco} (${parseInt(c.amount).toLocaleString()}đ)<br>
+                <div style="background:#f8fafc; padding:10px; margin-bottom:5px; border:1px solid #ddd; border-radius:5px;">
+                    <b>${c.user}</b>: ${c.telco} - ${parseInt(c.amount).toLocaleString()}đ<br>
                     <small>S: ${c.serial} | P: ${c.pin}</small><br>
-                    <button onclick="approve(${c.id}, 1)" style="background:green; color:white; width:45%; margin-top:5px; cursor:pointer;">DUYỆT</button>
-                    <button onclick="approve(${c.id}, 2)" style="background:red; color:white; width:45%; margin-top:5px; cursor:pointer;">SAI THẺ</button>
+                    <button onclick="approve(${c.id}, 1)" style="background:green; color:white; border:none; padding:5px; margin-top:5px; border-radius:3px;">Duyệt</button>
+                    <button onclick="approve(${c.id}, 2)" style="background:red; color:white; border:none; padding:5px; margin-top:5px; border-radius:3px;">Sai</button>
                 </div>`;
         });
     }
 
-    function approve(id, newStatus) {
+    function approve(id, status) {
         let cards = JSON.parse(localStorage.getItem("all_cards") || "[]");
         let card = cards.find(c => c.id == id);
-
         if(card) {
-            card.status = newStatus;
-            if(newStatus == 1) {
-                // Nếu thành công -> Cộng tiền cho user
+            card.status = status;
+            if(status == 1) {
                 let bal = parseInt(localStorage.getItem("balance_" + card.user) || "0");
                 localStorage.setItem("balance_" + card.user, bal + parseInt(card.amount));
-                alert("Đã duyệt và cộng tiền cho " + card.user);
-            } else {
-                alert("Đã bác bỏ thẻ của " + card.user);
             }
             localStorage.setItem("all_cards", JSON.stringify(cards));
             location.reload();
         }
     }
-    // Gọi hàm này trong window.onload của Admin
-    showCardsAdmin();
-</script>
-<div class="box" style="margin-top:20px; grid-column: span 2;">
-    <h2>👥 QUẢN LÝ TÀI KHOẢN KHÁCH</h2>
-    <table style="width:100%; border-collapse: collapse; font-size: 13px;">
-        <thead>
-            <tr style="background:#eee;">
-                <th style="padding:10px; border:1px solid #ddd;">Tài khoản</th>
-                <th style="padding:10px; border:1px solid #ddd;">Mật khẩu</th>
-                <th style="padding:10px; border:1px solid #ddd;">Số dư</th>
-                <th style="padding:10px; border:1px solid #ddd;">Ngày tạo</th>
-            </tr>
-        </thead>
-        <tbody id="user-list-admin"></tbody>
-    </table>
-</div>
 
-<script>
-    function showUsersAdmin() {
-        const users = JSON.parse(localStorage.getItem("all_users") || "[]");
-        const container = document.getElementById("user-list-admin");
-        container.innerHTML = "";
-        users.reverse().forEach(u => {
-            const bal = localStorage.getItem("balance_" + u.username) || "0";
-            container.innerHTML += `
-                <tr>
-                    <td style="padding:8px; border:1px solid #ddd;">${u.username}</td>
-                    <td style="padding:8px; border:1px solid #ddd;">${u.password}</td>
-                    <td style="padding:8px; border:1px solid #ddd; color:green; font-weight:bold;">${parseInt(bal).toLocaleString()}đ</td>
-                    <td style="padding:8px; border:1px solid #ddd; color:#666;">${u.date}</td>
-                </tr>`;
-        });
-    }
-    // Gọi showUsersAdmin() trong window.onload của admin
+    // --- KHỞI CHẠY ---
+    window.onload = function() {
+        showUsersAdmin();  // Hiển thị danh sách user ngay khi vào trang
+        showCardsAdmin();  // Hiển thị danh sách thẻ nạp
+    };
 </script>
+</body>
+</html>
