@@ -2,70 +2,54 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Quản Lý - SHOP THAIPP</title>
+    <title>Admin Panel - SHOP THAIPP</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .admin-box { background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 13px; }
-        input, select { width: 100%; padding: 12px; margin-top: 8px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        .btn-action { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px; color: white; }
-        .search-admin { border: 2px solid #e11d48 !important; }
-    </style>
 </head>
-<body>
-<div style="max-width: 900px; margin: auto; padding: 10px;">
-    <h2 style="color:#e11d48; text-align: center;">💎 HỆ THỐNG QUẢN TRỊ SHOP THAIPP</h2>
+<body style="background:#f4f6f9;">
+    <div style="max-width: 900px; margin: auto; padding: 20px;">
+        
+        <div class="admin-box" style="background:#fff; padding:20px; border-radius:8px; margin-bottom:20px; border-top: 4px solid #16a34a;">
+            <h3>💰 CỘNG TIỀN TAY</h3>
+            <input type="text" id="add_user" placeholder="Tên tài khoản khách (vd: thai123)" style="width:100%; padding:8px; margin:5px 0;">
+            <input type="number" id="add_amount" placeholder="Số tiền cần cộng" style="width:100%; padding:8px; margin:5px 0;">
+            <button onclick="addMoneyManual()" style="background:#16a34a; color:white; border:none; padding:10px; width:100%; cursor:pointer;">CỘNG TIỀN NGAY</button>
+        </div>
 
-    <div class="admin-box" style="border-top: 5px solid #16a34a;">
-        <h3 style="color:#16a34a;">💰 CỘNG TIỀN THỦ CÔNG (ATM/MOMO)</h3>
-        <input type="text" id="add_user" placeholder="Nhập chính xác tên tài khoản khách (Vd: thai123)">
-        <input type="number" id="add_amount" placeholder="Nhập số tiền cần cộng (Vd: 100000)">
-        <button onclick="addMoneyManual()" class="btn-action" style="background:#16a34a;">XÁC NHẬN CỘNG TIỀN</button>
-    </div>
+        <div class="admin-box" style="background:#fff; padding:20px; border-radius:8px; margin-bottom:20px; border-top: 4px solid #2563eb;">
+            <h3>➕ ĐĂNG ACC MỚI</h3>
+            <input type="text" id="t" placeholder="Tiêu đề Acc" style="width:100%; padding:8px; margin:5px 0;">
+            <input type="text" id="img" placeholder="Link ảnh" style="width:100%; padding:8px; margin:5px 0;">
+            <input type="number" id="pr" placeholder="Giá tiền" style="width:100%; padding:8px; margin:5px 0;">
+            <select id="cat" style="width:100%; padding:8px; margin:5px 0;">
+                <option value="2000">Dưới 2M</option>
+                <option value="500">Dưới 500k</option>
+                <option value="250">Dưới 250k</option>
+                <option value="150">Dưới 150k</option>
+            </select>
+            <input type="text" id="tk_acc" placeholder="Tài khoản Game" style="width:100%; padding:8px; margin:5px 0;">
+            <input type="text" id="mk_acc" placeholder="Mật khẩu Game" style="width:100%; padding:8px; margin:5px 0;">
+            <button onclick="adminSaveAcc()" style="background:#2563eb; color:white; border:none; padding:10px; width:100%; cursor:pointer;">ĐĂNG LÊN SHOP</button>
+        </div>
 
-    <div class="admin-box" style="border-top: 5px solid blue;">
-        <h3 style="color:blue;">➕ ĐĂNG BÁN ACC MỚI</h3>
-        <input type="text" id="t" placeholder="Tiêu đề Acc">
-        <input type="text" id="img" placeholder="Link ảnh Acc">
-        <input type="number" id="pr" placeholder="Giá tiền bán">
-        <select id="cat">
-            <option value="2000">Acc Liên Quân Dưới 2M</option>
-            <option value="500">Acc Liên Quân Dưới 500k</option>
-            <option value="250">Acc Liên Quân Dưới 250k</option>
-            <option value="150">Acc Liên Quân Dưới 150k</option>
-        </select>
-        <input type="text" id="tk_acc" placeholder="Tài khoản Game">
-        <input type="text" id="mk_acc" placeholder="Mật khẩu Game">
-        <button onclick="adminSaveAcc()" class="btn-action" style="background:blue;">ĐĂNG ACC LÊN SHOP</button>
-    </div>
+        <div class="admin-box" style="background:#fff; padding:20px; border-radius:8px; margin-bottom:20px;">
+            <h3>📋 DUYỆT THẺ ĐANG CHỜ</h3>
+            <div id="admin-card-list">Đang quét thẻ...</div>
+        </div>
 
-    <div class="admin-box">
-        <h3>📋 DUYỆT THẺ CÀO CHỜ</h3>
-        <div id="admin-card-list">Đang kiểm tra thẻ từ khách...</div>
-    </div>
-
-    <div class="admin-box">
-        <h3>🔍 TÌM KIẾM & KIỂM TRA TÀI KHOẢN</h3>
-        <input type="text" id="adminSearchInput" class="search-admin" placeholder="Gõ tên tài khoản game để tìm nhanh..." onkeyup="searchAdmin()">
-        <div style="overflow-x:auto;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Tài khoản</th>
-                        <th>Giá</th>
-                        <th>Danh mục</th>
-                        <th>Hành động</th>
-                    </tr>
+        <div class="admin-box" style="background:#fff; padding:20px; border-radius:8px;">
+            <h3>🔍 TÌM KIẾM & QUẢN LÝ ACC</h3>
+            <input type="text" id="adminSearchInput" onkeyup="searchAdmin()" placeholder="Gõ tên tài khoản để tìm..." style="width:100%; padding:10px; border:2px solid #e11d48; border-radius:5px; margin-bottom:15px;">
+            <table style="width:100%; border-collapse: collapse;">
+                <thead style="background:#eee;">
+                    <tr><th>TK Game</th><th>Giá</th><th>Xóa</th></tr>
                 </thead>
                 <tbody id="admin-acc-list"></tbody>
             </table>
         </div>
     </div>
-</div>
 
-<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
-<script src="script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
